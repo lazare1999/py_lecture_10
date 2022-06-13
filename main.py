@@ -28,7 +28,11 @@ def create(product: Product):
 
 @app.get('/products/{pk}')
 def get(pk: str):
-    return Product.get(pk)
+    try:
+        return Product.get(pk)
+    except Exception as e:
+        print(str(e))
+        return []
 
 
 @app.get('/products')
@@ -50,3 +54,10 @@ def format_pr(pk: str):
 @app.delete('/products/{pk}')
 def delete(pk: str):
     return Product.delete(pk)
+
+
+@app.put('products/{pk}/{q}')
+def change(pk: str, q: int):
+    product = Product.get(pk)
+    product.quantity = q
+    return product.save()
